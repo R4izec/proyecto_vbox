@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSF | Dashboard</title>
+  <link rel="icon" type="image/png" href="/src/csf-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+
+<body>
+  <div class="bg">
+    <span class="bg-blob b1"></span>
+    <span class="bg-blob b2"></span>
+    <span class="bg-grid"></span>
+  </div>
+
+  <header class="topbar" role="navigation" aria-label="Barra principal">
+    <a class="brand" aria-label="Inicio">
+      <img class="brand-logo" src="/src/csf-logo3.png" alt="CSF" />
+      <div class="brand-copy"><span>Monitoreo de Máquinas - Tiempo real</span></div>
+    </a>
+
+    <div class="actions">
+      <button id="menuBtn" class="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu" title="Menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="5" cy="12" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="19" cy="12" r="2" />
+        </svg>
+      </button>
+
+      <div id="userMenu" class="menu" role="menu" aria-labelledby="menuBtn">
+        <a role="menuitem" class="menu-item" href="/dashboard/dashboard.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" /></svg>
+          Dashboard
+        </a>
+        <a role="menuitem" class="menu-item" href="/historicos/historicos.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z" /></svg>
+          Históricos
+        </a>
+        <a role="menuitem" class="menu-item" href="/informes/informes.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2z" /></svg>
+          Informes
+        </a>
+        <a role="menuitem" class="menu-item" href="/maquinas">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z" /></svg>
+          Gestión de máquinas
+        </a>
+        <button role="menuitem" class="menu-item danger" id="logoutBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l1.41-1.41L8.83 13H21v-2H8.83l2.58-2.59L10 7l-5 5 5 5zM4 19h6v2H4a2 2 0 01-2-2V5a2 2 0 012-2h6v2H4v14z" /></svg>
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="welcome card">
+      <h1>Panel de monitoreo</h1>
+
+      <div class="controls" aria-label="Controles de filtrado">
+        <div class="control">
+          <label for="searchBox">Buscar</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM4 9.5C4 6.46 6.46 4 9.5 4S15 6.46 15 9.5 12.54 15 9.5 15 4 12.54 4 9.5z" />
+            </svg>
+            <input id="searchBox" type="text" placeholder="Nombre de la máquina ej: MF-46" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="control">
+          <label for="filterConn">Conexión</label>
+          <select id="filterConn">
+            <option value="">Todos</option>
+            <option value="1">En línea</option>
+            <option value="0">Fuera de línea</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="filterState">Estado</label>
+          <select id="filterState">
+            <option value="">Todos</option>
+            <option value="emergencia">Emergencia</option>
+            <option value="operativo">Operativo</option>
+            <option value="sin">Sin Operación</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="filterType">Tipo</label>
+          <select id="filterType">
+            <option value="">Todos</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="filterCompany">Empresa</label>
+          <select id="filterCompany">
+            <option value="">Todas</option>
+          </select>
+        </div>
+
+        <div class="control">
+          <label for="filterProvider">Prestador de Servicios</label>
+          <select id="filterProvider">
+            <option value="">Todos</option>
+          </select>
+        </div>
+
+        <div class="control align-end">
+          <label>&nbsp;</label>
+          <button id="btnExport" class="btn" type="button">
+            <span class="spinner hidden" aria-hidden="true"></span>
+            <span class="btn-text">Descargar Datos</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card slim" aria-live="polite">
+      <h2 class="section-title">Suma contadores de temporada</h2>
+
+      <div class="kpi-wrap">
+        <div class="kpi-item">
+          <div class="kpi-label">Total temporada</div>
+          <div class="kpi-value" id="totalSeasonAll">—</div>
+        </div>
+
+        <div class="kpi-item">
+          <div class="kpi-label">Máquinas visibles</div>
+          <div class="kpi-value" id="machinesVisible">—</div>
+
+          <!-- Chips dentro de la MISMA tarjeta de “Máquinas visibles” -->
+          <div id="kpiChips" class="kpi-chips hidden" aria-live="polite">
+            <span class="kpi-chip chip-green"   id="chipOperativo">Operativo: <b>0</b></span>
+            <span class="kpi-chip chip-red"     id="chipEmergencia">Emergencia: <b>0</b></span>
+            <span class="kpi-chip chip-yellow"  id="chipLadoA">Lado A: <b>0</b></span>
+            <span class="kpi-chip chip-yellow"  id="chipLadoB">Lado B: <b>0</b></span>
+            <span class="kpi-chip chip-gray"    id="chipOffline">Fuera de línea: <b>0</b></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card slim">
+      <div class="section-head">
+        <h2 class="section-title">Máquinas</h2>
+        <div class="section-actions">
+          <button id="btnToggleChart" class="btn btn-secondary" type="button" aria-expanded="false" aria-controls="chartCard">
+            Mostrar gráfico
+          </button>
+        </div>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Máquinas (scroll)">
+        <div class="table-viewport">
+          <table class="data-table" id="boxesTable">
+            <colgroup>
+              <col class="col-name" />
+              <col class="col-type" />
+              <col class="col-company" />
+              <col class="col-provider" />
+              <col class="col-startdate" />
+              <col class="col-season" />
+              <col class="col-online" />
+              <col class="col-state" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>Máquina</th>
+                <th>Tipo</th>
+                <th>Empresa</th>
+                <th>Prestador</th>
+                <th>Fecha inicio</th>
+                <th>
+                  <span class="th-sort">
+                    <span>C. temporada</span>
+                    <button class="sort" data-key="season" aria-label="Ordenar por producción temporada"><span class="caret"></span></button>
+                  </span>
+                </th>
+                <th>Conexión</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="boxesTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="chartCard" class="card chart-card hidden" aria-live="polite">
+      <div class="section-head">
+        <h2 class="section-title">Gráfico por máquina — C. temporada</h2>
+        <div class="section-actions">
+          <button id="btnHideChart" class="btn btn-tertiary" type="button">Ocultar gráfico</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div id="machinesBarChart"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./dashboard.js"></script>
+</body>
+</html>

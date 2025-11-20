@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSF | Acceso Monitoreo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/png" sizes="128x128" href="/src/csf-logo.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./login.css" />
+</head>
+
+<body>
+    <div class="bg">
+        <span class="bg-blob b1"></span>
+        <span class="bg-blob b2"></span>
+        <span class="bg-grid"></span>
+    </div>
+
+    <main class="container" aria-labelledby="titulo">
+        <section class="card">
+            <header class="brand">
+                <img src="/src/csf-logo3.png" alt="CSF Contenedores San Fernando" class="logo" />
+                <div class="brand-copy">
+                    <h1 id="titulo">Acceso</h1>
+                    <p>Monitoreo de Máquinas</p>
+                </div>
+            </header>
+
+            <form id="loginForm" novalidate>
+                <div class="field">
+                    <label for="username">Usuario</label>
+                    <input id="username" name="username" type="text" autocomplete="username" placeholder="Usuario"
+                        required minlength="3" />
+                    <small class="error" data-error-for="username"></small>
+                </div>
+
+                <div class="field">
+                    <label for="password">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input id="password" name="password" type="password" autocomplete="current-password"
+                            placeholder="••••••••" required minlength="6" />
+                        <button type="button" class="icon-btn" id="togglePass"
+                            aria-label="Mostrar u ocultar contraseña">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path
+                                    d="M12 5c5 0 9 4.5 10 7-1 2.5-5 7-10 7S3 14.5 2 12c1-2.5 5-7 10-7zm0 3a4 4 0 100 8 4 4 0 000-8z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <small class="error" data-error-for="password"></small>
+                </div>
+
+                <button type="submit" class="btn primary" id="submitBtn">
+                    <span class="btn-label">Acceder</span>
+                    <span class="spinner" aria-hidden="true"></span>
+                </button>
+
+                <p class="hint">Acceso restringido al personal autorizado de CSF.</p>
+            </form>
+        </section>
+    </main>
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./login.js"></script>
+</body>
+
+</html>

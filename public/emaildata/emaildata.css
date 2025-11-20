@@ -1,0 +1,125 @@
+/* Reusa variables y componentes de dashboard.css */
+
+.ed-grid {
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) minmax(360px, 1fr);
+    gap: 12px;
+    align-items: start;
+}
+
+.ed-grid .span-2 {
+    grid-column: 1 / -1;
+}
+
+.lbl-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: #d7dde8;
+}
+
+.lbl-inline input {
+    width: 18px;
+    height: 18px;
+}
+
+.ed-input,
+.ed-textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--stroke);
+    background: var(--control-bg);
+    color: var(--txt);
+    padding: 10px 12px;
+    font: 500 15px/1.3 Inter, system-ui, sans-serif;
+    outline: none;
+}
+
+.ed-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.ed-primary {
+    border-color: rgba(0, 102, 254, .45);
+    background: linear-gradient(135deg, rgba(0, 102, 254, .35), rgba(0, 102, 254, .55));
+    color: #fff;
+    font-weight: 700;
+}
+
+.ed-primary .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2.5px solid rgba(255, 255, 255, .45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .75s linear infinite;
+}
+
+.ed-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.ed-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.data-table td:first-child,
+.data-table th:first-child {
+    text-align: center;
+}
+
+.ed-check {
+    width: 18px;
+    height: 18px;
+    accent-color: #4f9cff;
+    cursor: pointer;
+}
+
+@media (max-width:960px) {
+    .ed-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Toast local */
+.toast {
+    position: fixed;
+    right: 22px;
+    top: 84px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, .12);
+    background: rgba(18, 22, 29, .95);
+    color: var(--txt);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity .25s, transform .25s;
+    z-index: 20;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast .close {
+    background: transparent;
+    border: 0;
+    color: #c6cfdd;
+    cursor: pointer;
+    border-radius: 8px;
+    width: 28px;
+    height: 28px;
+}

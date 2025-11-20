@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSF | Gestión</title>
+
+  <link rel="icon" type="image/png" href="/src/csf-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/maquinas/maquinas.css" />
+</head>
+<body>
+  <!-- Fondo -->
+  <div class="bg">
+    <span class="bg-blob b1"></span>
+    <span class="bg-blob b2"></span>
+    <span class="bg-grid"></span>
+  </div>
+
+  <!-- Topbar -->
+  <header class="topbar" role="navigation" aria-label="Barra principal">
+    <a class="brand" href="/dashboard" aria-label="Inicio">
+      <img class="brand-logo" src="/src/csf-logo3.png" alt="CSF" />
+      <div class="brand-copy"><span>Monitoreo de máquinas - Gestión de Máquinas</span></div>
+    </a>
+
+    <div class="actions">
+      <button id="menuBtn" class="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu" title="Menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="5" cy="12" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="19" cy="12" r="2" />
+        </svg>
+      </button>
+
+      <div id="userMenu" class="menu" role="menu" aria-labelledby="menuBtn">
+        <a role="menuitem" class="menu-item" href="/dashboard">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+          Dashboard
+        </a>
+
+        <a role="menuitem" class="menu-item" href="/historicos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z"/></svg>
+          Históricos
+        </a>
+
+        <a role="menuitem" class="menu-item" href="/informes">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>
+          Informes
+        </a>
+
+        <a role="menuitem" class="menu-item" href="/maquinas" id="linkGestion">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z"/></svg>
+          Registrar / Modificar
+        </a>
+
+        <button role="menuitem" class="menu-item danger" id="logoutBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l1.41-1.41L8.83 13H21v-2H8.83l2.58-2.59L10 7l-5 5 5 5zM4 19h6v2H4a2 2 0 01-2-2V5a2 2 0 012-2h6v2H4v14z"/></svg>
+          Cerrar sesión
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Card -->
+  <main class="auth-shell">
+    <section class="auth-card" aria-label="Gestión de máquinas">
+      <div class="auth-head">
+        <h1>Máquinas</h1>
+
+        <!-- Switch Registrar/Modificar -->
+        <div class="mode-switch" role="tablist" aria-label="Modo de formulario">
+          <input type="radio" id="mode-create" name="mode" value="create" checked />
+          <label for="mode-create" role="tab" aria-controls="pane-create">Registrar</label>
+          <input type="radio" id="mode-edit" name="mode" value="edit" />
+          <label for="mode-edit" role="tab" aria-controls="pane-edit">Modificar</label>
+          <span class="pill"></span>
+        </div>
+      </div>
+
+      <!-- Buscador/selector (solo en Modificar) -->
+      <div id="searchPane" class="search-pane" hidden>
+        <div class="search-row">
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6z"/>
+            </svg>
+            <input id="machineSearch" type="text" placeholder="Buscar por nombre o número… (ej: 150)" autocomplete="off" />
+          </div>
+
+          <select id="machineSelect">
+            <option value="">Selecciona una máquina…</option>
+          </select>
+
+          <button id="btnLoad" class="btn ghost" type="button" title="Cargar datos">Cargar</button>
+          <button id="btnDelete" class="btn danger ghost" type="button" title="Eliminar máquina" hidden>Eliminar</button>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <form id="frmMachine" class="form-grid" autocomplete="off" novalidate>
+        <input type="hidden" id="editId" />
+
+        <div class="form-control">
+          <label for="machineName">Nombre de la máquina <b>*</b></label>
+          <input id="machineName" name="machineName" type="text" placeholder="Ej: MF-140" required />
+        </div>
+
+        <!-- Empresa: select + input bloqueable -->
+        <div class="form-control">
+          <label>Empresa</label>
+          <select id="companyExisting">
+            <option value="">— Seleccionar existente —</option>
+          </select>
+          <input id="company" name="company" type="text" placeholder="Ej: Agrofruta" />
+        </div>
+
+        <!-- Prestador: select + input bloqueable -->
+        <div class="form-control">
+          <label>Prestador de servicios</label>
+          <select id="providerExisting">
+            <option value="">— Seleccionar existente —</option>
+          </select>
+          <input id="provider" name="provider" type="text" placeholder="Ej: Fepack" />
+        </div>
+
+        <!-- Tipo: solo select (DOBLE/2023/2024) -->
+        <div class="form-control">
+          <label for="typeSelect">Tipo de máquina</label>
+          <select id="typeSelect" name="type" required>
+            <option value="">— Seleccionar —</option>
+            <option value="CSF-DOBLE">CSF-DOBLE</option>
+            <option value="PEL-CSF"> PEL-CSF</option>
+            <option value="2023-CSF">2023-CSF</option>
+            <option value="2024-CSF">2024-CSF</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label for="startDate">Fecha de inicio</label>
+          <input id="startDate" name="startDate" type="date" />
+        </div>
+
+        <div class="form-control">
+          <label for="initialCounter">Contador inicial <b>*</b></label>
+          <input id="initialCounter" name="initialCounter" type="number" inputmode="numeric" step="1" min="0" placeholder="0" required />
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn" id="btnSave"><span class="btn-text">Registrar</span></button>
+          <button type="button" class="btn ghost" id="btnClear">Limpiar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ====== TABLA ====== -->
+    <section class="card-table">
+      <h2 class="section-title">Listado de máquinas</h2>
+
+      <div class="table-wrap">
+        <!-- Cabecera fija -->
+        <table class="data-table head-only" aria-hidden="true">
+          <colgroup>
+            <col class="col-name" />
+            <col class="col-type" />
+            <col class="col-company" />
+            <col class="col-provider" />
+            <col class="col-date" />
+            <col class="col-counter" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Máquina</th>
+              <th>Tipo</th>
+              <th>Empresa</th>
+              <th>Prestador</th>
+              <th>Fecha inicio</th>
+              <th>Contador inicial</th>
+            </tr>
+          </thead>
+        </table>
+
+        <!-- Cuerpo desplazable -->
+        <div class="table-viewport" role="region" aria-label="Máquinas (scroll)">
+          <table class="data-table body-only" id="machinesTable">
+            <colgroup>
+              <col class="col-name" />
+              <col class="col-type" />
+              <col class="col-company" />
+              <col class="col-provider" />
+              <col class="col-date" />
+              <col class="col-counter" />
+            </colgroup>
+            <tbody id="machinesTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" role="status" aria-live="polite">
+    <span class="msg"></span>
+    <button class="close" aria-label="Cerrar">×</button>
+  </div>
+
+  <script src="/maquinas/maquinas.js"></script>
+</body>
+</html>

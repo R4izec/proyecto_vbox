@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSF | Enviar informes</title>
+
+    <link rel="icon" type="image/png" href="/src/csf-logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- estilos compartidos -->
+    <link rel="stylesheet" href="../dashboard/dashboard.css" />
+    <!-- estilos de esta pantalla -->
+    <link rel="stylesheet" href="./emaildata.css" />
+</head>
+
+<body>
+    <div class="bg">
+        <span class="bg-blob b1"></span>
+        <span class="bg-blob b2"></span>
+        <span class="bg-grid"></span>
+    </div>
+
+    <header class="topbar" role="navigation" aria-label="Barra principal">
+        <a class="brand" href="/dashboard" aria-label="Inicio">
+            <img class="brand-logo" src="/src/csf-logo3.png" alt="CSF" />
+            <div class="brand-copy"><span>Enviar informes por correo</span></div>
+        </a>
+
+        <div class="actions">
+            <button id="menuBtn" class="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu"
+                title="Menú">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="5" cy="12" r="2" />
+                    <circle cx="12" cy="12" r="2" />
+                    <circle cx="19" cy="12" r="2" />
+                </svg>
+            </button>
+            <div id="userMenu" class="menu" role="menu" aria-labelledby="menuBtn">
+                <a role="menuitem" class="menu-item" href="/dashboard/dashboard.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
+                    </svg> Dashboard
+                </a>
+                <a role="menuitem" class="menu-item" href="/historicos/historicos.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z" />
+                    </svg> Históricos
+                </a>
+                <a role="menuitem" class="menu-item" href="/informes/informes.html">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2z" />
+                    </svg> Informes
+                </a>
+                <a role="menuitem" class="menu-item" id="menuSendReports" href="#">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+                Enviar informes
+                </a>
+                <a role="menuitem" class="menu-item" href="/maquinas">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z" />
+                </svg> Gestión de máquinas
+                </a>
+                <button role="menuitem" class="menu-item danger" id="logoutBtn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M10 17l1.41-1.41L8.83 13H21v-2H8.83l2.58-2.59L10 7l-5 5 5 5zM4 19h6v2H4a2 2 0 01-2-2V5a2 2 0 012-2h6v2H4v14z" />
+                    </svg>
+                    Cerrar sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+
+        <!-- BLOQUE: generar y enviar informe -->
+        <section class="card">
+            <h2 class="section-title">Informe de temporada (generar y enviar)</h2>
+
+            <div class="controls ed-grid">
+                <div class="control">
+                    <label for="edUseDefault" class="lbl-inline">
+                        <input type="checkbox" id="edUseDefault" /> Usar asunto y cuerpo predeterminados
+                    </label>
+                </div>
+
+                <div class="control">
+                    <label for="edTo">Destinatarios (opcional)</label>
+                    <input id="edTo" class="ed-input" type="text" placeholder="correo@empresa.com; otro@dom.com" />
+                </div>
+
+                <div class="control span-2">
+                    <label for="edSubject">Asunto</label>
+                    <input id="edSubject" class="ed-input" type="text" placeholder="Asunto del correo (opcional)" />
+                </div>
+
+                <div class="control span-2">
+                    <label for="edBody">Cuerpo</label>
+                    <textarea id="edBody" class="ed-textarea" rows="6"
+                        placeholder="Mensaje del correo (opcional)"></textarea>
+                </div>
+
+                <div class="control align-end">
+                    <label>&nbsp;</label>
+                    <button id="btnGenSend" class="btn ed-primary">
+                        <span class="spinner hidden"></span>
+                        <span class="btn-text">Generar informe y enviar</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BLOQUE: enviar exports existentes -->
+        <section class="card slim">
+            <div class="ed-header">
+                <h2 class="section-title">Enviar exports existentes</h2>
+                <div class="ed-actions">
+                    <button id="btnRefresh" class="btn">Refrescar</button>
+                    <button id="btnSelectAll" class="btn">Seleccionar todo</button>
+                    <button id="btnSendChecked" class="btn ed-primary">Enviar seleccionados</button>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="data-table" id="edTable">
+                    <colgroup>
+                        <col style="width:56px" />
+                        <col />
+                        <col style="width:18%" />
+                        <col style="width:18%" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Archivo</th>
+                            <th>Tamaño</th>
+                            <th>Creado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="edTbody">
+                        <tr class="loading-row">
+                            <td colspan="4">
+                                <div class="loader"><span class="ring"></span> Cargando...</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal de verificación emailPass -->
+    <div class="modal" id="edAccessModal">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="edAccessTitle">
+            <h3 id="edAccessTitle">Acceso a envío de informes</h3>
+            <p>Ingresa tu contraseña para esta función.</p>
+            <div class="control">
+                <input id="edAccessPwd" class="ed-input" type="password" placeholder="Contraseña de envío" />
+            </div>
+            <div class="modal-buttons">
+                <button id="edAccessCancel">Cancelar</button>
+                <button id="edAccessOk" class="danger">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./emaildata.js"></script>
+</body>
+</html>

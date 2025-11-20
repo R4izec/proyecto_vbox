@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSF | Históricos</title>
+  <link rel="icon" type="image/png" href="/src/csf-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <link rel="stylesheet" href="../dashboard/dashboard.css" />
+  <link rel="stylesheet" href="./historicos.css" />
+</head>
+
+<body>
+  <div class="bg">
+    <span class="bg-blob b1"></span>
+    <span class="bg-blob b2"></span>
+    <span class="bg-grid"></span>
+  </div>
+  <header class="topbar" role="navigation" aria-label="Barra principal">
+    <a class="brand" href="/dashboard" aria-label="Inicio">
+      <img class="brand-logo" src="/src/csf-logo3.png" alt="CSF" />
+      <div class="brand-copy"><span>Monitoreo de Máquinas - Históricos</span></div>
+    </a>
+    <div class="actions">
+      <button id="menuBtn" class="menu-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="userMenu"
+        title="Menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="5" cy="12" r="2" />
+          <circle cx="12" cy="12" r="2" />
+          <circle cx="19" cy="12" r="2" />
+        </svg>
+      </button>
+      <div id="userMenu" class="menu" role="menu" aria-labelledby="menuBtn">
+        <a role="menuitem" class="menu-item" href="/dashboard">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+          </svg> Dashboard
+        </a>
+        <a role="menuitem" class="menu-item" href="/historicos/historicos.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 4h14v2H5zM5 18h14v2H5zM5 9h14v6H5z" />
+          </svg> Históricos
+        </a>
+        <a role="menuitem" class="menu-item" href="/informes/informes.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2z" />
+          </svg> Informes
+        </a>
+        <button role="menuitem" class="menu-item danger" id="logoutBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M10 17l1.41-1.41L8.83 13H21v-2H8.83l2.58-2.59L10 7l-5 5 5 5zM4 19h6v2H4a2 2 0 01-2-2V5a2 2 0 012-2h6v2H4v14z" />
+          </svg>
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </header>
+  <main class="page">
+    <section class="card">
+      <h2 class="section-title">Históricos</h2>
+      <div class="his-grid">
+        <div class="control his-machine" aria-label="Máquina">
+          <label for="machineSearch">Máquina</label>
+          <div class="his-machine-row">
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79L20 21.5 21.5 20l-6-6zM4 9.5C4 6.46 6.46 4 9.5 4S15 6.46 15 9.5 12.54 15 9.5 15 4 12.54 4 9.5z" />
+              </svg>
+              <input id="machineSearch" type="text" placeholder="Buscar máquina: MF-46, 46..." autocomplete="off" />
+            </div>
+            <select id="machineSelect" class="his-select" aria-label="Seleccionar máquina"></select>
+          </div>
+        </div>
+        <div class="control his-company">
+          <label for="companySelect">Empresa</label>
+          <select id="companySelect" class="his-select">
+            <option value="" selected>Selecciona</option>
+          </select>
+        </div>
+        <div class="control his-provider">
+          <label for="providerSelect">Prestador de Servicios</label>
+          <select id="providerSelect" class="his-select">
+            <option value="" selected>Selecciona</option>
+          </select>
+        </div>
+        <div class="control his-start">
+          <label for="startDate">Inicio</label>
+          <input id="startDate" type="date" class="his-date" />
+        </div>
+        <div class="control his-end">
+          <label for="endDate">Término</label>
+          <input id="endDate" type="date" class="his-date" />
+        </div>
+        <div class="control his-actions">
+          <label aria-hidden="true">&nbsp;</label>
+          <div class="his-chips">
+            <button class="chip" id="btnToday">Hoy</button>
+            <button class="chip" id="btn7">Últimos 7 días</button>
+            <button class="chip" id="btn30">Últimos 30 días</button>
+            <button class="btn-primary" id="btnSearch">Buscar</button>
+            <button class="chip" id="btnExport">Informe</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="card kpi-strip" aria-label="Resumen">
+      <div class="kpi-row">
+        <div class="kpi-card kpi--current">
+          <div class="kpi-title">Contador actual</div>
+          <div class="kpi-value" id="k-current">—</div>
+        </div>
+        <div class="kpi-card kpi--total">
+          <div class="kpi-title">Producción temporada</div>
+          <div class="kpi-value" id="k-total">—</div>
+        </div>
+        <div class="kpi-card kpi--range">
+          <div class="kpi-title">Producción del rango</div>
+          <div class="kpi-value" id="k-range">—</div>
+        </div>
+      </div>
+    </section>
+    <section class="card">
+      <h2 class="section-title">Actividad por día</h2>
+      <div class="his-result">
+        <div class="loader" id="hisLoader" style="display:none;"><span class="ring"></span> Consultando datos...</div>
+        <div id="hisChartsWrap" class="his-months-wrap"></div>
+        <div id="hisEmpty" class="muted" style="display:none;margin:12px auto;">Selecciona filtros y pulsa "Buscar".
+        </div>
+        <div id="hisError" class="muted" style="display:none;margin:12px auto;color:#fecaca;">Error consultando
+          históricos.</div>
+      </div>
+    </section>
+  </main>
+  <div id="dpanel" class="dpanel" aria-hidden="true">
+    <div class="dpanel-backdrop" id="dp-close" aria-hidden="true"></div>
+    <div class="dpanel-body" role="dialog" aria-modal="true" aria-labelledby="dp-title">
+      <div class="dpanel-head">
+        <div>
+          <h3 id="dp-title" class="offcanvas-title">Detalle del día</h3>
+          <div id="dp-sub" class="muted">—</div>
+        </div>
+        <button id="dp-x" class="dp-x" aria-label="Cerrar">×</button>
+      </div>
+      <div class="dp-content">
+        <div class="dp-left">
+          <div class="dp-chart">
+            <div class="dp-chart-title">
+              <span>Tendencia (x hora)</span>
+              <div class="dp-rate-chips">
+                <span class="chip small" id="chip-cph">—/h</span>
+                <span class="chip small" id="chip-cpm">—/min</span>
+              </div>
+            </div>
+            <div class="dp-chart-box">
+              <canvas id="dpChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="dp-right">
+          <div class="dp-kpis">
+            <div class="dp-kpi">
+              <div class="k-title">Emergencias (veces)</div>
+              <div id="dp-kpi-emer" class="k-val">—</div>
+            </div>
+            <div class="dp-kpi">
+              <div class="k-title">Tiempo en emergencia</div>
+              <div id="dp-kpi-emermin" class="k-val">—</div>
+            </div>
+            <div class="dp-kpi">
+              <div class="k-title">Contador del día</div>
+              <div id="dp-kpi-cont" class="k-val">—</div>
+            </div>
+          </div>
+          <div class="dp-meta">
+            <div>Inicio producción: <strong id="dp-firstOn">—</strong></div>
+            <div>Fin producción: <strong id="dp-lastOff">—</strong></div>
+            <div>Total producción: <strong id="dp-runTotal">—</strong></div>
+          </div>
+
+          <div style="margin: 10px 0;">
+            <button class="chip" id="btnToggleTable">Mostrar detalles</button>
+          </div>
+          <div id="dp-main" class="dp-main" style="display:none;">
+            <div id="dp-anchor"></div>
+            <div class="dp-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                    <th>Emergencia</th>
+                    <th>Duración de Producción</th>
+                    <th>Cantidad de Emergencias</th>
+                    <th>Producción Total</th>
+                    <th>Promedio (cajas/min)</th>
+                  </tr>
+                </thead>
+                <tbody id="dp-rows">
+                  <tr>
+                    <td colspan="7" class="muted">—</td>
+                  </tr>
+                </tbody>
+                <tfoot id="dp-foot">
+                  <tr>
+                    <td colspan="7" class="muted">—</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./historicos.js"></script>
+</body>
+
+</html>

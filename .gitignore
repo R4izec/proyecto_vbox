@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+
+# Entorno / claves
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Archivos generados (informes, exports)
+exports/
+public/exports/
+
+# Backups de base de datos
+dump/
+*.bak
+*.bson
+
+# Archivos de sistema / editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
